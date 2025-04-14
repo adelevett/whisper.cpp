@@ -70,6 +70,21 @@ option(WHISPER_ALL_WARNINGS_3RD_PARTY "whisper: enable all compiler warnings in 
 option(WHISPER_FATAL_WARNINGS  "whisper: enable -Werror flag"               OFF)
 option(WHISPER_USE_SYSTEM_GGML "whisper: use system-installed GGML library" OFF)
 
+# Add compiler-specific warning flags
+if (WHISPER_ALL_WARNINGS)
+    if(NOT MSVC)
+        add_compile_options(-Wall -Wextra)
+        if (WHISPER_FATAL_WARNINGS)
+            add_compile_options(-Werror)
+        endif()
+    else()
+        add_compile_options(/W4)
+        if (WHISPER_FATAL_WARNINGS)
+            add_compile_options(/WX)
+        endif()
+    endif()
+endif()
+
 # sanitizers
 option(WHISPER_SANITIZE_THREAD    "whisper: enable thread sanitizer"    OFF)
 option(WHISPER_SANITIZE_ADDRESS   "whisper: enable address sanitizer"   OFF)

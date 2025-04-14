@@ -85,6 +85,21 @@ option(GGML_ALL_WARNINGS           "ggml: enable all compiler warnings"         
 option(GGML_ALL_WARNINGS_3RD_PARTY "ggml: enable all compiler warnings in 3rd party libs" OFF)
 option(GGML_GPROF                  "ggml: enable gprof"                                   OFF)
 
+# Add compiler-specific warning flags
+if (GGML_ALL_WARNINGS)
+    if(NOT MSVC)
+        add_compile_options(-Wall -Wextra)
+        if (GGML_FATAL_WARNINGS)
+            add_compile_options(-Werror)
+        endif()
+    else()
+        add_compile_options(/W4)
+        if (GGML_FATAL_WARNINGS)
+            add_compile_options(/WX)
+        endif()
+    endif()
+endif()
+
 # build
 option(GGML_FATAL_WARNINGS    "ggml: enable -Werror flag"    OFF)
 
