@@ -93,7 +93,13 @@ option(WHISPER_SANITIZE_UNDEFINED "whisper: enable undefined sanitizer" OFF)
 # extra artifacts
 option(WHISPER_BUILD_TESTS    "whisper: build tests"          ${WHISPER_STANDALONE})
 option(WHISPER_BUILD_EXAMPLES "whisper: build examples"       ${WHISPER_STANDALONE})
-option(WHISPER_BUILD_SERVER   "whisper: build server example" ${WHISPER_STANDALONE})
+option(WHISPER_BUILD_SERVER   "whisper: build server example" ${WHISPER_STANDALONE}) # Note: This option seems unused, server is built via examples
+
+# Force WHISPER_BUILD_EXAMPLES ON if included as subdirectory (user request)
+if (NOT WHISPER_STANDALONE)
+    set(WHISPER_BUILD_EXAMPLES ON CACHE BOOL "Build examples" FORCE)
+    message(STATUS "whisper.cpp: Forcing WHISPER_BUILD_EXAMPLES=ON because it's included as a subdirectory.")
+endif()
 
 # 3rd party libs
 option(WHISPER_CURL "whisper: use libcurl to download model from an URL" OFF)
